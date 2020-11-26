@@ -1,0 +1,5 @@
+cluster-endpoint.txt
+etcd-hosts.txt
+haproxy.conf
+kubeadm-config.yaml
+notes.txt
