@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NODE_SET=2
+
 launch() {
 	multipass launch --name ${1} --cpus=2 --mem=4G --disk=10G
 }
@@ -11,33 +13,38 @@ haproxy() {
 }
 
 controller() {
-	for i in {0..2} ; do
+	for (( i=0; i<=${NODE_SET}; i++ )) ; do
 		host=controller-${i}
 		launch ${host}
 	done
 }
 
 worker() {
-	for i in {0..2} ; do
+	for (( i=0; i<=${NODE_SET}; i++ )) ; do
 		host=worker-${i}
 		launch ${host}
 	done
 }
 
 etcd() {
-	for i in {0..2} ; do
+	for (( i=0; i<=${NODE_SET}; i++ )) ; do
 		host=etcd-${i}
 		launch ${host}
 	done
 }
 
 cluster_endpoint() {
-	IP=$(multipass info haproxy | grep IPv4 | awk '{print $2}')
-	echo "${IP} cluster-endpoint" > cluster-endpoint.txt
+	if [[ ${NODE_SET} > 1 ]] ; then
+		IP=$(multipass info haproxy | grep IPv4 | awk '{print $2}')
+		echo "${IP} cluster-endpoint" > cluster-endpoint.txt
+	else 
+		IP=$(multipass info controller-0 | grep IPv4 | awk '{print $2}')
+		echo "${IP} cluster-endpoint" > cluster-endpoint.txt
+	fi
 }
 
 etcd_hosts() {
-	for i in {0..2} ; do
+	for (( i=0; i<=${NODE_SET}; i++ )) ; do
 		host=etcd-${i}
 		IP=$(multipass info ${host} | grep IPv4 | awk '{print $2}')
 		echo "export HOST${i}=${IP}" >> etcd-hosts.txt
@@ -56,6 +63,12 @@ case ${1} in
 		;;
 	'etcd')
 		etcd
+		;;
+	'single-node')
+		NODE_SET=0
+		controller
+		worker
+		cluster_endpoint
 		;;
 	*)
 		haproxy

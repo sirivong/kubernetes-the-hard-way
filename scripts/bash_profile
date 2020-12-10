@@ -3,3 +3,4 @@ if [ -e $HOME/.bashrc ] ; then
 fi
 
 alias k=kubectl
+alias kadm=kubeadm

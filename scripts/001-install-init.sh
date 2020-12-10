@@ -15,7 +15,7 @@ deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 
 sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-get install -y kubelet=1.19.x-00 kubeadm=1.19.x-00 kubectl=1.19.x-00
 sudo apt-mark hold kubelet kubeadm kubectl
 
 systemctl daemon-reload

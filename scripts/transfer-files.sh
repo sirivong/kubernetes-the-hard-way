@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NODE_SET=2
+
 bash_profile() {
 	multipass transfer bash_profile ${1}:.bash_profile
 }
@@ -13,7 +15,7 @@ haproxy() {
 }
 
 controller() {
-	for i in {0..2} ; do
+	for (( i=0; i<=${NODE_SET}; i++ )) ; do
 		host=controller-${i}
 		echo "Transfer files to ${host}"
 		multipass transfer kubeadm-config.yaml ${host}:.
@@ -25,7 +27,7 @@ controller() {
 }
 
 worker() {
-	for i in {0..2} ; do
+	for (( i=0; i<=${NODE_SET}; i++ )) ; do
 		host=worker-${i}
 		echo "Transfer files to ${host}"
 		multipass transfer 0*.sh ${host}:.
@@ -35,7 +37,7 @@ worker() {
 }
 
 etcd() {
-	for i in {0..2} ; do
+	for (( i=0; i<=${NODE_SET}; i++ )) ; do
 		host=etcd-${i}
 		echo "Transfer files to ${host}"
 		multipass transfer etcd-hosts.txt ${host}:.
@@ -45,9 +47,18 @@ etcd() {
 	done
 }
 
-haproxy
-controller
-worker
-etcd
+case ${1} in
+	'single-node')
+		NODE_SET=0
+		controller
+		worker
+		;;
+	*)
+		haproxy
+		controller
+		worker
+		etcd
+		;;
+esac
 
 exit $?
