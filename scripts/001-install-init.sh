@@ -21,4 +21,4 @@ sudo apt-mark hold kubelet kubeadm kubectl
 systemctl daemon-reload
 systemctl restart kubelet
 
-cat cluster-endpoint.txt | sudo tee -a /etc/hosts
+./006-update-etc-hosts.sh
