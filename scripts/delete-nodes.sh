@@ -1,7 +1,8 @@
 #!/bin/bash
 
 delete_haproxy() {
-	multipass delete haproxy
+	multipass delete haproxy-controller
+	multipass delete haproxy-etcd
 }
 
 delete_controller() {
