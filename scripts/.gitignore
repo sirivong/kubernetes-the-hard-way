@@ -1,5 +1,9 @@
 cluster-endpoint.txt
+etcd-1.tar.gz
+etcd-2.tar.gz
 etcd-hosts.txt
+haproxy-controller.conf
+haproxy-etcd.conf
 haproxy.conf
 kubeadm-config.yaml
 notes.txt

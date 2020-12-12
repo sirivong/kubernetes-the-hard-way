@@ -6,6 +6,7 @@ source ./etcd-hosts.txt
 # Create temp directories to store files that will end up on other hosts.
 mkdir -p /tmp/${HOST0}/ /tmp/${HOST1}/ /tmp/${HOST2}/
 
+HAHOST=etcd-endpoint
 ETCDHOSTS=(${HOST0} ${HOST1} ${HOST2})
 NAMES=("etcd-0" "etcd-1" "etcd-2")
 
@@ -19,8 +20,10 @@ etcd:
     local:
         serverCertSANs:
         - "${HOST}"
+        - "${HAHOST}"
         peerCertSANs:
         - "${HOST}"
+        - "${HAHOST}"
         extraArgs:
             initial-cluster: ${NAMES[0]}=https://${ETCDHOSTS[0]}:2380,${NAMES[1]}=https://${ETCDHOSTS[1]}:2380,${NAMES[2]}=https://${ETCDHOSTS[2]}:2380
             initial-cluster-state: new

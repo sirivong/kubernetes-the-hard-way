@@ -1,10 +1,10 @@
 #!/bin/bash
 
-CONTROLLER0_IP=$(multipass info controller-0 | grep IPv4 | awk '{print $2}')
-CONTROLLER1_IP=$(multipass info controller-1 | grep IPv4 | awk '{print $2}')
-CONTROLLER2_IP=$(multipass info controller-2 | grep IPv4 | awk '{print $2}')
+HOST0_IP=$(multipass info controller-0 | grep IPv4 | awk '{print $2}')
+HOST1_IP=$(multipass info controller-1 | grep IPv4 | awk '{print $2}')
+HOST2_IP=$(multipass info controller-2 | grep IPv4 | awk '{print $2}')
 
-cat <<EOF | tee haproxy.conf
+cat <<EOF | tee haproxy-controller.conf
 #---------------------------------------------------------------------
 # apiserver frontend which proxys to the masters
 #---------------------------------------------------------------------
@@ -23,7 +23,7 @@ backend apiserver
     mode tcp
     option ssl-hello-chk
     balance     roundrobin
-        server controller-0 ${CONTROLLER0_IP}:6443 check
-        server controller-1 ${CONTROLLER1_IP}:6443 check
-        server controller-2 ${CONTROLLER2_IP}:6443 check
+        server controller-0 ${HOST0_IP}:6443 check
+        server controller-1 ${HOST1_IP}:6443 check
+        server controller-2 ${HOST2_IP}:6443 check
 EOF

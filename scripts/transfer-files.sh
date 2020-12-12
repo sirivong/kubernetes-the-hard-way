@@ -6,12 +6,20 @@ bash_profile() {
 	multipass transfer bash_profile ${1}:.bash_profile
 }
 
-haproxy() {
-	echo "Transfer files to haproxy"
-	multipass transfer 100-install-haproxy.sh haproxy:.
-	multipass transfer haproxy.conf haproxy:.
-	multipass exec haproxy -- chmod 755 1*.sh
-	bash_profile haproxy
+haproxy_controller() {
+	echo "Transfer files to haproxy-controller"
+	multipass transfer 100-install-haproxy.sh haproxy-controller:.
+	multipass transfer haproxy-controller.conf haproxy-controller:haproxy.conf
+	multipass exec haproxy-controller -- chmod 755 1*.sh
+	bash_profile haproxy-controller
+}
+
+haproxy_etcd() {
+	echo "Transfer files to haproxy-etcd"
+	multipass transfer 100-install-haproxy.sh haproxy-etcd:.
+	multipass transfer haproxy-etcd.conf haproxy-etcd:haproxy.conf
+	multipass exec haproxy-etcd -- chmod 755 1*.sh
+	bash_profile haproxy-etcd
 }
 
 controller() {
@@ -54,7 +62,8 @@ case ${1} in
 		worker
 		;;
 	*)
-		haproxy
+		haproxy_controller
+		haproxy_etcd
 		controller
 		worker
 		etcd
