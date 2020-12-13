@@ -30,6 +30,7 @@ controller() {
 		multipass transfer 0*.sh ${host}:.
 		multipass transfer cluster-endpoint.txt ${host}:.
 		multipass exec ${host} -- chmod 755 0*.sh
+		multipass transfer hosts.txt ${host}:.
 		bash_profile ${host}
 	done
 }
@@ -40,6 +41,7 @@ worker() {
 		echo "Transfer files to ${host}"
 		multipass transfer 0*.sh ${host}:.
 		multipass transfer cluster-endpoint.txt ${host}:.
+		multipass transfer hosts.txt ${host}:.
 		multipass exec ${host} -- chmod 755 0*.sh
 	done
 }
@@ -52,6 +54,7 @@ etcd() {
 		multipass transfer 0*.sh ${host}:.
 		multipass transfer cluster-endpoint.txt ${host}:.
 		multipass exec ${host} -- chmod 755 0*.sh
+		multipass transfer hosts.txt ${host}:.
 	done
 }
 
