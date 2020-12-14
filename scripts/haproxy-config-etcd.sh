@@ -21,7 +21,7 @@ backend etcdserver
     mode tcp
     option ssl-hello-chk
     balance     roundrobin
-        server controller-0 ${HOST0_IP}:2379
-        server controller-1 ${HOST1_IP}:2379
-        server controller-2 ${HOST2_IP}:2379
+        server etcd-0 ${HOST0_IP}:2379
+        server etcd-1 ${HOST1_IP}:2379
+        server etcd-2 ${HOST2_IP}:2379
 EOF

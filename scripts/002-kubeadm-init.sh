@@ -3,14 +3,14 @@
 kubeadm config images pull
 
 single_node() {
-	sudo kubeadm init \
+	kubeadm init \
 		--control-plane-endpoint=cluster-endpoint \
 		--upload-certs \
 		--ignore-preflight-errors=all
 }
 
 multi_node() {
-	sudo kubeadm init \
+	kubeadm init \
 		--config kubeadm-config.yaml \
 		--upload-certs \
 		--ignore-preflight-errors=all
@@ -18,13 +18,8 @@ multi_node() {
 
 kubeconfig() {
 	mkdir -p ${HOME}/.kube
-	sudo cp -i /etc/kubernetes/admin.conf ${HOME}/.kube/config
-	sudo chown $(id -u):$(id -g) ${HOME}/.kube/config
-
-	USER_HOME=/home/ubuntu
-	mkdir -p ${USER_HOME}/.kube
-	sudo cp -i /etc/kubernetes/admin.conf ${USER_HOME}/.kube/config
-	sudo chown ubuntu:ubuntu ${USER_HOME}/.kube/config
+	cp -i /etc/kubernetes/admin.conf ${HOME}/.kube/config
+	chown ubuntu:ubuntu ${HOME}/.kube/config
 }
 
 pod_network() {

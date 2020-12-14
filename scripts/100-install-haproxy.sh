@@ -5,6 +5,6 @@ apt-get install -y haproxy
 
 cat haproxy.conf | tee -a /etc/haproxy/haproxy.cfg
 
-sudo systemctl daemon-reload
-sudo systemctl restart haproxy
-sudo systemctl enable haproxy
+systemctl daemon-reload
+systemctl restart haproxy
+systemctl enable haproxy
